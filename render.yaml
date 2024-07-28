@@ -1,0 +1,22 @@
+services:
+  - name: next
+    type: web
+    runtime: node
+    envVars:
+      - key: POSTGRES_URL
+        fromDatabase:
+          name: postgres
+          property: connectionString
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+    healthCheckPath: /api/health
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm run start
+    plan: free
+    region: frankfurt
+databases:
+  - name: postgres # Required
+    postgresMajorVersion: "16" # Default: most recent supported version
+    region: frankfurt # Default: oregon
+    plan: free # Default: starter
+    databaseName: db # Default: generated value based on name
