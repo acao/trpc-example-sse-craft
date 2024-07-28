@@ -65,6 +65,7 @@ export function Landing(props: Readonly<{ channelId: string }>) {
             if (dataString.length < 3) {
               return;
             }
+            console.log('mutating....')
             editPage.mutate({
               channelId: channelId,
               pageData: query.serialize(),
