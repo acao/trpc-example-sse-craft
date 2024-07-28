@@ -1,4 +1,4 @@
-// components/user/Container.js
+"use client"
 import React from "react";
 import {} from "@radix-ui/react-slot";
 import { useNode } from "@craftjs/core";

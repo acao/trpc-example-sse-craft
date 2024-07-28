@@ -1,3 +1,4 @@
+"use client"
 import { useNode } from "@craftjs/core";
 import { Fieldset, Label, Select } from "@headlessui/react";
 import { useRef } from "react";
@@ -29,9 +30,8 @@ export const Heading = ({
 
   const HeadingLevel = level;
   return (
-    <HeadingLevel  ref={connect}  style={{ fontSize: sizes[level] }}>
+    <HeadingLevel ref={connect} style={{ fontSize: sizes[level] }}>
       <ContentEditable
-       
         html={visibleText.current}
         onChange={(e) => (visibleText.current = e.target.value)}
         onBlur={(e) =>

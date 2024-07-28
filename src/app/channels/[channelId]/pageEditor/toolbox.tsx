@@ -1,4 +1,4 @@
-// components/Toolbox.js
+"use client"
 import { Element, useEditor } from "@craftjs/core";
 import React from "react";
 

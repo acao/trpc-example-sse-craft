@@ -1,4 +1,4 @@
-// components/user/Button.js
+"use client"
 import React from "react";
 import clsx from "clsx";
 import { useNode } from "@craftjs/core";

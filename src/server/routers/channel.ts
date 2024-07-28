@@ -142,7 +142,7 @@ export const channelRouter = {
       ee.emit("editPageUpdate", channelId, pageData);
       return null;
     }),
-  page: authedProcedure.input(z.string().uuid()).query(async (opts) => {
+  page: publicProcedure.input(z.string().uuid()).query(async (opts) => {
     const page = await db.query.Channel.findFirst({
       where: (users, { eq }) => eq(users.id, opts.input),
       columns: {
@@ -151,7 +151,7 @@ export const channelRouter = {
     });
     return page?.page;
   }),
-  pageEdits: authedProcedure
+  pageEdits: publicProcedure
     .input(z.string().uuid())
     .subscription(async function* (opts) {
       console.log('sub')

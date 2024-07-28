@@ -1,20 +1,9 @@
 "use client";
 
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
-import { Avatar } from "~/components/avatar";
-import { Textarea } from "~/components/input";
 import { trpc } from "~/lib/trpc";
-import { cx } from "class-variance-authority";
-import { format, formatDistanceToNow, isToday } from "date-fns";
-import { useSession } from "next-auth/react";
+
 import * as React from "react";
-import {
-  useLivePosts,
-  usePage,
-  useThrottledIsTypingMutation,
-  useWhoIsTyping,
-} from "./hooks";
-import { Topbar } from "./pageEditor/topbar";
+import { usePage } from "./hooks";
 import { Toolbox } from "./pageEditor/toolbox";
 import { SettingsPanel } from "./pageEditor/settings";
 
@@ -87,7 +76,9 @@ export function Landing(props: Readonly<{ channelId: string }>) {
 
             <div className="flex flex-row flex-1">
               <div className="flex flex-col flex-1 h-full w-full">
-                <EditorFrame channelId={channelId} />
+                {/* <React.Suspense fallback="loading..."> */}
+                  <EditorFrame channelId={channelId} />
+                {/* </React.Suspense> */}
               </div>
               <div className="flex flex-col h-full w-[25%]">
                 <Toolbox />
@@ -104,22 +95,24 @@ export function Landing(props: Readonly<{ channelId: string }>) {
 const EditorFrame = ({ channelId }: { channelId: string }) => {
   const { actions } = useEditor();
   const page = usePage(channelId, actions);
- 
-  return (
-    <Frame data={page ?? undefined}>
-      <Element is={Container} canvas>
-        <Container>
-          <Element is={Heading} canvas>
-            <Heading text="Heading 1" />
-          </Element>
-          <Element is={Text} canvas>
-            <Text text="Drop a card here" />
-          </Element>
-        </Container>
-        <Element is={Container} canvas>
-          <Heading text="Heading 2" />
-        </Element>
-      </Element>
-    </Frame>
-  );
+  if (page) {
+    return <Frame data={page} />;
+  }
+//   return (
+//     <Frame data={page ?? undefined}>
+//       <Element is={Container} canvas>
+//         <Container>
+//           <Element is={Heading} canvas>
+//             <Heading text="Heading 1" />
+//           </Element>
+//           <Element is={Text} canvas>
+//             <Text text="Drop a card here" />
+//           </Element>
+//           <Element is={Heading} canvas>
+//             <Heading text="Heading 2" />
+//           </Element>
+//         </Container>
+//       </Element>
+//     </Frame>
+//   );
 };

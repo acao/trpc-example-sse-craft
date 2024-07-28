@@ -1,3 +1,4 @@
+"use client"
 import { Node, useNode } from "@craftjs/core";
 import React, { useCallback, useRef } from "react";
 import ContentEditable from "react-contenteditable";

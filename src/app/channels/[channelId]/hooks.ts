@@ -123,7 +123,10 @@ export function useLivePosts(channelId: string) {
 }
 
 export const usePage = (channelId: string, actions: any) => {
-  const { data } = trpc.channel.page.useQuery(channelId);
+  const { data } = trpc.channel.page.useQuery(channelId, {
+    suspense: true,
+    networkMode: "always"
+  });
 
   trpc.channel.pageEdits.useSubscription(channelId,
     {

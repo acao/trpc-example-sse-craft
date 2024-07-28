@@ -1,3 +1,4 @@
+"use client"
 export { Button } from "./button";
 export { Card, CardBottom, CardTop } from "./card";
 export { Container } from "./container";

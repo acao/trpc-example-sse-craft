@@ -1,4 +1,4 @@
-// components/user/Card.js
+"use client"
 import React from "react";
 import { Text } from "./text";
 import { Button } from "./button";
