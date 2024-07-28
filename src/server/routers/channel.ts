@@ -1,17 +1,20 @@
-import EventEmitter, { on } from 'node:events';
-import type { TRPCRouterRecord } from '@trpc/server';
-import { sse } from '@trpc/server';
-import { db } from '~/server/db/client';
-import type { PostType } from '~/server/db/schema';
-import { Channel } from '~/server/db/schema';
-import { authedProcedure, publicProcedure } from '~/server/trpc';
-import { z } from 'zod';
+import EventEmitter, { on } from "node:events";
+import type { TRPCRouterRecord } from "@trpc/server";
+import { sse } from "@trpc/server";
+import { db } from "~/server/db/client";
+import type { PostType } from "~/server/db/schema";
+import { Channel } from "~/server/db/schema";
+import { authedProcedure, publicProcedure } from "~/server/trpc";
+import { z } from "zod";
+import { auth } from "../auth";
+import { eq } from "drizzle-orm";
 
 export type WhoIsTyping = Record<string, { lastTyped: Date }>;
 
 interface MyEvents {
   add: (channelId: string, data: PostType) => void;
   isTypingUpdate: (channelId: string, who: WhoIsTyping) => void;
+  editPageUpdate: (channelId: string, pageData: any) => void;
 }
 declare interface MyEventEmitter {
   on<TEv extends keyof MyEvents>(event: TEv, listener: MyEvents[TEv]): this;
@@ -25,7 +28,7 @@ declare interface MyEventEmitter {
 
 class MyEventEmitter extends EventEmitter {
   public toIterable<TEv extends keyof MyEvents>(
-    event: TEv,
+    event: TEv
   ): AsyncIterable<Parameters<MyEvents[TEv]>> {
     return on(this, event);
   }
@@ -50,7 +53,7 @@ setInterval(() => {
     }
   }
   updatedChannels.forEach((channelId) => {
-    ee.emit('isTypingUpdate', channelId, currentlyTyping[channelId] ?? {});
+    ee.emit("isTypingUpdate", channelId, currentlyTyping[channelId] ?? {});
   });
 }, 3e3).unref();
 
@@ -90,19 +93,17 @@ export const channelRouter = {
           lastTyped: new Date(),
         };
       }
-      ee.emit('isTypingUpdate', channelId, currentlyTyping[channelId]);
+      ee.emit("isTypingUpdate", channelId, currentlyTyping[channelId]);
     }),
-
   whoIsTyping: publicProcedure
     .input(
       z.object({
         channelId: z.string().uuid(),
-      }),
+      })
     )
     .subscription(async function* (opts) {
       const { channelId } = opts.input;
-
-      let lastIsTyping = '';
+      let lastIsTyping = "";
 
       /**
        * yield who is typing if it has changed
@@ -121,9 +122,45 @@ export const channelRouter = {
       // emit who is currently typing
       yield* maybeYield(currentlyTyping[channelId] ?? {});
 
-      for await (const [channelId, who] of ee.toIterable('isTypingUpdate')) {
+      for await (const [channelId, who] of ee.toIterable("isTypingUpdate")) {
         if (channelId === opts.input.channelId) {
           yield* maybeYield(who);
+        }
+      }
+      
+    }),
+  editPage: authedProcedure
+    .input(z.object({ channelId: z.string(), pageData: z.any() }))
+    .mutation(async (opts) => {
+      const { channelId, pageData } = opts.input;
+      await db
+
+        .update(Channel)
+
+        .set({ page: pageData })
+        .where(eq(Channel.id, opts.input.channelId))
+      ee.emit("editPageUpdate", channelId, pageData);
+      return null;
+    }),
+  page: authedProcedure.input(z.string().uuid()).query(async (opts) => {
+    const page = await db.query.Channel.findFirst({
+      where: (users, { eq }) => eq(users.id, opts.input),
+      columns: {
+        page: true,
+      },
+    });
+    return page?.page;
+  }),
+  pageEdits: authedProcedure
+    .input(z.string().uuid())
+    .subscription(async function* (opts) {
+      console.log('sub')
+      for await (const [channelId, pageData] of ee.toIterable(
+        "editPageUpdate"
+      )) {
+        if (channelId === opts.input) {
+         
+          yield { data: pageData };
         }
       }
     }),

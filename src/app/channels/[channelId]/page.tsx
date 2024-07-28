@@ -1,8 +1,9 @@
-import { Suspense } from 'react';
-import { Chat } from './chat';
+import { Suspense } from "react";
+import { Chat } from "./chat";
+import { Landing } from "./landing";
 
 export default async function Home(
-  props: Readonly<{ params: { channelId: string } }>,
+  props: Readonly<{ params: { channelId: string } }>
 ) {
   const channelId = props.params.channelId;
 
@@ -14,7 +15,11 @@ export default async function Home(
         </div>
       }
     >
-      <Chat channelId={channelId} />
+      <main className="flex flex-1 overflow-hidden h-full flex-row">
+       
+        <Chat channelId={channelId} />
+        <Landing channelId={channelId} />
+      </main>
     </Suspense>
   );
 }

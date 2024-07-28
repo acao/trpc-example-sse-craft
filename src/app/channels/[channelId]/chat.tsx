@@ -39,8 +39,8 @@ export function Chat(props: Readonly<{ channelId: string }>) {
   const session = useSession().data;
 
   return (
-    <main className="flex-1 overflow-hidden">
-      <div className="flex h-full flex-col">
+   
+      <div className="flex h-full flex-col w-[30%]">
         <div
           className="flex flex-1 flex-col-reverse overflow-y-scroll p-4 sm:p-6 lg:p-8"
           ref={scrollRef}
@@ -133,7 +133,7 @@ export function Chat(props: Readonly<{ channelId: string }>) {
           />
         </div>
       </div>
-    </main>
+   
   );
 }
 
@@ -190,7 +190,7 @@ function AddMessageForm(props: {
           onChange={(e) => setMessage(e.target.value)}
           rows={message.split(/\r|\n/).length}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && e.metaKey) {
+            if (e.key === 'Enter' && (e.metaKey || e.shiftKey)) {
               e.preventDefault();
               void postMessage();
             }

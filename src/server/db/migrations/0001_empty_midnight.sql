@@ -1,0 +1,1 @@
+ALTER TABLE "sse-chat_channel" ADD COLUMN "page" text;

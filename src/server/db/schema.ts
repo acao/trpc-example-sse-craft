@@ -1,27 +1,27 @@
-import type { InferSelectModel } from 'drizzle-orm';
-import { relations } from 'drizzle-orm';
-import { pgTableCreator, text, timestamp } from 'drizzle-orm/pg-core';
+import type { InferSelectModel } from "drizzle-orm";
+import { relations } from "drizzle-orm";
+import { pgTableCreator, text, timestamp } from "drizzle-orm/pg-core";
 
 const pgTable = pgTableCreator((name) => `sse-chat_${name}`);
 
-export const Post = pgTable('post', {
-  id: text('id')
+export const Post = pgTable("post", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  channelId: text('channel_id').references(() => Channel.id),
+  channelId: text("channel_id").references(() => Channel.id),
 
-  author: text('name'),
-  text: text('text'),
+  author: text("name"),
+  text: text("text"),
 
-  createdAt: timestamp('created_at', {
-    mode: 'date',
+  createdAt: timestamp("created_at", {
+    mode: "date",
     precision: 3,
     withTimezone: true,
   })
     .notNull()
     .defaultNow(),
-  updatedAt: timestamp('updated_at', {
-    mode: 'date',
+  updatedAt: timestamp("updated_at", {
+    mode: "date",
     precision: 3,
     withTimezone: true,
   })
@@ -31,27 +31,28 @@ export const Post = pgTable('post', {
 });
 export type PostType = InferSelectModel<typeof Post>;
 
-export const Channel = pgTable('channel', {
-  id: text('id')
+export const Channel = pgTable("channel", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: text('name'),
+  name: text("name"),
 
-  createdAt: timestamp('created_at', {
-    mode: 'date',
+  createdAt: timestamp("created_at", {
+    mode: "date",
     precision: 3,
     withTimezone: true,
   })
     .notNull()
     .defaultNow(),
-  updatedAt: timestamp('updated_at', {
-    mode: 'date',
+  updatedAt: timestamp("updated_at", {
+    mode: "date",
     precision: 3,
     withTimezone: true,
   })
     .notNull()
     .defaultNow()
     .$onUpdateFn(() => new Date()),
+  page: text("page"),
 });
 export type ChannelType = InferSelectModel<typeof Channel>;
 
@@ -62,3 +63,6 @@ export const PostRelations = relations(Post, ({ one }) => ({
 export const ChannelRelations = relations(Channel, ({ many }) => ({
   posts: many(Post),
 }));
+
+
+

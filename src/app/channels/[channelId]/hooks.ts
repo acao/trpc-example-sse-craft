@@ -1,6 +1,6 @@
-import { skipToken } from '@tanstack/react-query';
-import { trpc } from '~/lib/trpc';
-import * as React from 'react';
+import { skipToken } from "@tanstack/react-query";
+import { trpc } from "~/lib/trpc";
+import * as React from "react";
 
 export function useWhoIsTyping(channelId: string) {
   const [currentlyTyping, setCurrentlyTyping] = React.useState<string[]>([]);
@@ -10,7 +10,7 @@ export function useWhoIsTyping(channelId: string) {
       onData(list) {
         setCurrentlyTyping(list);
       },
-    },
+    }
   );
 
   return currentlyTyping;
@@ -56,7 +56,7 @@ export function useLivePosts(channelId: string) {
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
-    },
+    }
   );
   const utils = trpc.useUtils();
   const [messages, setMessages] = React.useState(() => {
@@ -70,7 +70,7 @@ export function useLivePosts(channelId: string) {
    */
   const addMessages = React.useCallback((incoming?: Post[]) => {
     setMessages((current) => {
-      const map: Record<Post['id'], Post> = {};
+      const map: Record<Post["id"], Post> = {};
       for (const msg of current ?? []) {
         map[msg.id] = msg;
       }
@@ -78,7 +78,7 @@ export function useLivePosts(channelId: string) {
         map[msg.id] = msg;
       }
       return Object.values(map).sort(
-        (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+        (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
       );
     });
   }, []);
@@ -111,13 +111,30 @@ export function useLivePosts(channelId: string) {
         addMessages([event.data]);
       },
       onError(err) {
-        console.error('Subscription error:', err);
+        console.error("Subscription error:", err);
         utils.post.infinite.invalidate();
       },
-    },
+    }
   );
   return {
     query,
     messages,
   };
 }
+
+export const usePage = (channelId: string, actions: any) => {
+  const { data } = trpc.channel.page.useQuery(channelId);
+
+  trpc.channel.pageEdits.useSubscription(channelId,
+    {
+      onData(event) {
+        console.log({ event })
+        actions.deserialize(event.data);
+      },
+      onError(err) {
+        console.error("Subscription error:", err);
+      },
+    }
+  );
+  return data
+};
