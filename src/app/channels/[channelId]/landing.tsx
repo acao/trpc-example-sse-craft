@@ -44,6 +44,9 @@ export function Landing(props: Readonly<{ channelId: string }>) {
   //   const session = useSession().data;
   const editPage = trpc.channel.editPage.useMutation();
 
+  const dataRef = React.useRef<string | null>(null);
+
+
   return (
     <div className="flex flex-1 h-full flex-col">
       <div
@@ -62,9 +65,11 @@ export function Landing(props: Readonly<{ channelId: string }>) {
           }}
           onNodesChange={debounce((query) => {
             const dataString = query.serialize();
-            if (dataString.length < 3) {
+            
+            if (dataString.length < 3 || dataString === dataRef.current) {
               return;
             }
+            dataRef.current = dataString;
             console.log('mutating....')
             editPage.mutate({
               channelId: channelId,
