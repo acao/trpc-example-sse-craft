@@ -2,7 +2,7 @@
   "name": "examples-next-sse-chat",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@latest",
+  "packageManager": "pnpm@8",
   "scripts": {
     "build:1-generate": "drizzle-kit generate",
     "build:2-migrate": "pnpm migrate",
@@ -11,7 +11,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "start:render": "node .next/standalone/server.js",
+    "start:render": "cross-env NODE_ENV=production node .next/standalone/server.js",
     "migrate": "drizzle-kit migrate"
   },
   "dependencies": {
