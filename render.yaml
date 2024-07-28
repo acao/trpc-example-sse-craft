@@ -9,7 +9,7 @@ services:
           property: connectionString
       - key: NEXTAUTH_SECRET
         generateValue: true
-    healthCheckPath: /api/health
+    healthCheckPath: /
     buildCommand: pnpm install && pnpm run build
     startCommand: pnpm run start
     plan: free

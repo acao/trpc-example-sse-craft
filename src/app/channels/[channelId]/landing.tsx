@@ -69,7 +69,7 @@ export function Landing(props: Readonly<{ channelId: string }>) {
             CardBottom,
             CardTop,
             Heading,
-            Button
+            Button,
           }}
           onNodesChange={debounce((query) => {
             const dataString = query.serialize();
@@ -104,25 +104,22 @@ export function Landing(props: Readonly<{ channelId: string }>) {
 const EditorFrame = ({ channelId }: { channelId: string }) => {
   const { actions } = useEditor();
   const page = usePage(channelId, actions);
-  if (!page) {
-    return (
-      <Frame>
-        <Element is={Container} canvas>
-          <Container>
-            <Element is={Heading} canvas>
-              <Heading text="Heading 1" />
-            </Element>
-            <Element is={Text} canvas>
-              <Text text="Drop a card here" />
-            </Element>
-          </Container>
-          <Element is={Container} canvas>
-            <Heading text="Heading 2" />
+ 
+  return (
+    <Frame data={page ?? undefined}>
+      <Element is={Container} canvas>
+        <Container>
+          <Element is={Heading} canvas>
+            <Heading text="Heading 1" />
           </Element>
+          <Element is={Text} canvas>
+            <Text text="Drop a card here" />
+          </Element>
+        </Container>
+        <Element is={Container} canvas>
+          <Heading text="Heading 2" />
         </Element>
-      </Frame>
-    );
-  }
-
-  return <Frame data={page} />;
+      </Element>
+    </Frame>
+  );
 };
