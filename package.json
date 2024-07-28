@@ -11,6 +11,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
+    "start:render": "node .next/standalone/server.js",
     "migrate": "drizzle-kit migrate"
   },
   "dependencies": {

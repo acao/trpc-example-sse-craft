@@ -11,7 +11,7 @@ services:
         generateValue: true
     healthCheckPath: /api/health
     buildCommand: pnpm install && pnpm run build
-    startCommand: pnpm run start
+    startCommand: pnpm run start:render
     plan: free
     region: frankfurt
 databases:

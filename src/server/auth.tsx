@@ -7,6 +7,7 @@ import { z } from 'zod';
 
 const authOptions: NextAuthConfig = {
   providers: [],
+  trustHost: true
 };
 
 let useMockProvider =
