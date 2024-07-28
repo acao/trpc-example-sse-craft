@@ -3,7 +3,7 @@
 import { trpc } from "~/lib/trpc";
 
 import * as React from "react";
-import { usePage } from "./hooks";
+import { usePage, usePageEdits } from "./hooks";
 import { Toolbox } from "./pageEditor/toolbox";
 import { SettingsPanel } from "./pageEditor/settings";
 
@@ -76,9 +76,9 @@ export function Landing(props: Readonly<{ channelId: string }>) {
 
             <div className="flex flex-row flex-1">
               <div className="flex flex-col flex-1 h-full w-full">
-                {/* <React.Suspense fallback="loading..."> */}
+                <React.Suspense fallback="loading...">
                   <EditorFrame channelId={channelId} />
-                {/* </React.Suspense> */}
+                </React.Suspense>
               </div>
               <div className="flex flex-col h-full w-[25%]">
                 <Toolbox />
@@ -96,23 +96,6 @@ const EditorFrame = ({ channelId }: { channelId: string }) => {
   const { actions } = useEditor();
   const page = usePage(channelId, actions);
   if (page) {
-    return <Frame data={page} />;
+    return <Frame json={page} />;
   }
-//   return (
-//     <Frame data={page ?? undefined}>
-//       <Element is={Container} canvas>
-//         <Container>
-//           <Element is={Heading} canvas>
-//             <Heading text="Heading 1" />
-//           </Element>
-//           <Element is={Text} canvas>
-//             <Text text="Drop a card here" />
-//           </Element>
-//           <Element is={Heading} canvas>
-//             <Heading text="Heading 2" />
-//           </Element>
-//         </Container>
-//       </Element>
-//     </Frame>
-//   );
 };
