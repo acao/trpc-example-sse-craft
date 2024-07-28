@@ -1,4 +1,9 @@
-# tRPC + Server-sent Events (SSE)
+# Realtime Chat & Web page builder????
+Forked from https://github.com/trpc/examples-next-sse-chat who did most of the work, this just adds support for editing webpages in realtime as well, using craft.js, as an experiment.
+
+It's deployed on render.com
+
+## tRPC + Server-sent Events (SSE)
 
 This example showcases the use of `httpSubscriptionLink` to facilitate `.useSubscription` via [Server-sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events).
 
