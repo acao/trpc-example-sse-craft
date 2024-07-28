@@ -71,8 +71,9 @@ export const TextSettings = () => {
         <Slider.Root
           className="SliderRoot"
           defaultValue={[fontSize]}
-          max={141}
-          step={1}
+          max={128}
+          min={8}
+          step={2}
           onValueChange={(value) => {
             setProp((props) => (props.fontSize = value));
           }}
@@ -111,8 +112,8 @@ export const TextSettings = () => {
         <Slider.Root
           className="SliderRoot"
           defaultValue={[padding]}
-          max={100}
-          step={1}
+          max={128}
+          step={2}
           onValueChange={(value) => {
             setProp((props) => (props.padding = value));
           }}

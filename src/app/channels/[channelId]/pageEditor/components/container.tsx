@@ -53,8 +53,8 @@ export const ContainerSettings = () => {
         <Slider.Root
           className="SliderRoot"
           defaultValue={[padding]}
-          max={100}
-          step={1}
+          max={142}
+          step={2}
           onValueChange={(value) => {
             setProp((props) => (props.padding = value));
           }}
