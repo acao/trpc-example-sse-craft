@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import { useNode } from "@craftjs/core";
 import { Fieldset, Label, Select } from "@headlessui/react";
 import { useRef } from "react";
 import ContentEditable from "react-contenteditable";
+import { TextSettings } from "./text";
 
 const sizes = {
   h1: 36,
@@ -17,10 +18,16 @@ export const Heading = ({
   children,
   level = "h2",
   text,
+  color,
+  padding,
+  fontSize,
 }: {
   children?: React.ReactNode;
   level?: keyof typeof sizes;
   text: string;
+  color?: string;
+  padding?: number;
+  fontSize?: number;
 }) => {
   const {
     actions: { setProp },
@@ -30,7 +37,14 @@ export const Heading = ({
 
   const HeadingLevel = level;
   return (
-    <HeadingLevel ref={connect} style={{ fontSize: sizes[level] }}>
+    <HeadingLevel
+      ref={connect}
+      style={{
+        fontSize: fontSize ? `${fontSize}px` : sizes[level],
+        color,
+        padding: `${padding}px`,
+      }}
+    >
       <ContentEditable
         html={visibleText.current}
         onChange={(e) => (visibleText.current = e.target.value)}
@@ -56,7 +70,7 @@ export const HeadingSettings = () => {
     text: node.data.props.text,
   }));
   return (
-    <div className="block pb-10 text-sm">
+    <div className="block pb-10 text-sm ">
       <Fieldset>
         <Label className={"pb-3"}>
           Level:
@@ -73,15 +87,8 @@ export const HeadingSettings = () => {
             ))}
           </Select>
         </Label>
-        <Label className={"pb-3"}>
-          Text:
-          <input
-            className="bg-white text-black p-1 w-[90%]"
-            value={text}
-            onChange={(e) => setProp((props) => (props.text = e.target.value))}
-          />
-        </Label>
       </Fieldset>
+      <TextSettings />
     </div>
   );
 };
@@ -90,6 +97,8 @@ Heading.craft = {
   defaultProps: {
     text: "Example Heading",
     level: "h2",
+    color: 'black',
+    padding: 0
   },
   related: {
     settings: HeadingSettings,

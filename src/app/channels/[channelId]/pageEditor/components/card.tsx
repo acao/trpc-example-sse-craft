@@ -44,7 +44,7 @@ CardBottom.craft = {
 
 export const Card = ({
   background,
-  padding = 20,
+  padding,
 }: {
   background?: string;
   padding?: number;

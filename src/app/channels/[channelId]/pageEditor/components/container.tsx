@@ -97,6 +97,10 @@ Container.craft = {
   related: {
     settings: ContainerSettings,
   },
+  defaultProps: {
+    background: "#fff",
+    padding: 12,
+  },
   rules: {
     canDrop: () => true,
     canDrag: () => true,

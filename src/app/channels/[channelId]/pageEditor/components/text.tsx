@@ -50,7 +50,7 @@ export const Text = ({
   );
 };
 
-const TextSettings = () => {
+export const TextSettings = () => {
   const {
     actions: { setProp },
     fontSize,
@@ -142,7 +142,7 @@ Text.craft = {
   props: {
     text: "Hi",
     fontSize: 12,
-    color: "white",
+    color: "black",
     padding: 2,
   },
   related: {

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 
 import { Button } from "~/components/button";
@@ -27,7 +27,7 @@ export const SettingsPanel = () => {
   });
 
   return selected ? (
-    <div className="bg-gray-900 mt-2 px-2 py-2 ml-1">
+    <div className="bg-gray-900 mt-2 p-6 ml-1 text-white">
       <div className="flex flex-col space-y-0">
         <div>
           <div className="pb-2">
@@ -37,7 +37,7 @@ export const SettingsPanel = () => {
           </div>
         </div>
         <div className="text-sm pb-10">
-        {selected.settings && React.createElement(selected.settings)}
+          {selected.settings && React.createElement(selected.settings)}
         </div>
         <Button variant="default" color="default">
           Delete
